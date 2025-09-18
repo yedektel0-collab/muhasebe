@@ -1,0 +1,19 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Sadece backend manifest dosyaları
+COPY package.json package-lock.json* ./
+
+# Prod bağımlılıkları kur
+# npm v9+: --omit=dev (eski eşdeğeri: --only=production)
+RUN npm ci --omit=dev
+
+# Uygulama kaynakları
+COPY src ./src
+COPY server.js .
+COPY scripts ./scripts
+COPY sql ./sql
+
+EXPOSE 3000
+CMD ["node", "server.js"]

@@ -3,7 +3,7 @@ import {
   createCustomer,
   getCustomerById,
   updateCustomer,
-  deleteCustomer
+  deleteCustomer,
 } from "../db/client.js";
 
 export const listCustomers = async (req, res, next) => {
@@ -53,7 +53,9 @@ export const editCustomer = async (req, res, next) => {
     }
     const { name, email } = req.body || {};
     if (!name && !email) {
-      return res.status(400).json({ error: "En az bir alan (name veya email) gönderilmeli" });
+      return res
+        .status(400)
+        .json({ error: "En az bir alan (name veya email) gönderilmeli" });
     }
     const updated = await updateCustomer(id, { name, email });
     if (!updated) return res.status(404).json({ error: "Müşteri bulunamadı" });

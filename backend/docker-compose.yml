@@ -1,16 +1,37 @@
-version: "3.9"
 services:
   db:
-    image: postgres:15
-    container_name: muhasebe-db
-    restart: unless-stopped
+    image: postgres:16
     environment:
-      POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: muhasebe
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d muhasebe"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - dbdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: monorepo-backend:latest
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: muhasebe
+      PORT: 3000
+    ports:
+      - "3000:3000"
+
 volumes:
-  db_data:
+  dbdata:

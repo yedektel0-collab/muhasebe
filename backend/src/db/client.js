@@ -6,7 +6,7 @@ const pool = new Pool({
   port: process.env.DATABASE_PORT ? parseInt(process.env.DATABASE_PORT) : 5432,
   user: process.env.DATABASE_USER || "postgres",
   password: process.env.DATABASE_PASSWORD || "postgres",
-  database: process.env.DATABASE_NAME || "muhasebe"
+  database: process.env.DATABASE_NAME || "muhasebe",
 });
 
 export async function getDbTime() {
@@ -16,7 +16,7 @@ export async function getDbTime() {
 
 export async function getAllCustomers() {
   const r = await pool.query(
-    "SELECT id, name, email, created_at FROM customers ORDER BY id ASC"
+    "SELECT id, name, email, created_at FROM customers ORDER BY id ASC",
   );
   return r.rows;
 }
@@ -24,7 +24,7 @@ export async function getAllCustomers() {
 export async function getCustomerById(id) {
   const r = await pool.query(
     "SELECT id, name, email, created_at FROM customers WHERE id = $1",
-    [id]
+    [id],
   );
   return r.rows[0] || null;
 }
@@ -32,7 +32,7 @@ export async function getCustomerById(id) {
 export async function createCustomer({ name, email }) {
   const r = await pool.query(
     "INSERT INTO customers (name, email) VALUES ($1, $2) RETURNING id, name, email, created_at",
-    [name, email]
+    [name, email],
   );
   return r.rows[0];
 }
@@ -44,7 +44,7 @@ export async function updateCustomer(id, { name, email }) {
          email = COALESCE($3, email)
      WHERE id = $1
      RETURNING id, name, email, created_at`,
-    [id, name ?? null, email ?? null]
+    [id, name ?? null, email ?? null],
   );
   return r.rows[0] || null;
 }

@@ -1,7 +1,7 @@
 import { getDbTime } from "../db/client.js";
 
 export const healthRoot = (req, res) => {
-  res.send("Muhasebe API çalýþýyor");
+  res.send("Muhasebe API ï¿½alï¿½ï¿½ï¿½yor");
 };
 
 export const dbCheck = async (req, res) => {
