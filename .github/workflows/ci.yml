@@ -1,3 +1,5 @@
+$path = ".github\workflows\ci.yml"
+(Get-Content $path -Raw) -replace 'npm ci','npm install' | Set-Content -Encoding UTF8 $path
 git add .github/workflows/ci.yml
 git commit -m "CI: use npm install instead of npm ci"
 git push
