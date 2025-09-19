@@ -7,13 +7,16 @@
     "start": "node server.js",
     "dev": "cross-env PORT=3001 NODE_ENV=development nodemon server.js",
     "migrate": "node scripts/migrate.js",
-    "test": "cross-env NODE_ENV=test node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand",
-    "test:watch": "cross-env NODE_ENV=test node --experimental-vm-modules ./node_modules/jest/bin/jest.js --watchAll",
-    "test:ci": "cross-env NODE_ENV=test node --experimental-vm-modules ./node_modules/jest/bin/jest.js --ci --runInBand --coverage",
+    "test": "cross-env NODE_ENV=test jest --runInBand",
+    "test:watch": "cross-env NODE_ENV=test jest --watchAll",
+    "test:ci": "cross-env NODE_ENV=test jest --ci --runInBand --coverage",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",
     "format:check": "prettier . --check"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "dotenv": "16.6.1",
