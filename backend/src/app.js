@@ -5,8 +5,6 @@ import authRouter from "./routes/auth.js";
 import adminRouter from "./routes/admin.js";
 import plansRouter from "./routes/plans.js";
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
-import swaggerUi from "swagger-ui-express";
-import { swaggerSpec } from "./docs/swagger.js";
 
 import pinoHttp from "pino-http";
 import crypto from "node:crypto";
@@ -36,15 +34,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// Root -> /docs (opsiyonel)
-app.get("/", (req, res) => res.redirect("/docs"));
-
-// Swagger UI (notFound'dan önce olmalı)
-app.use(
-  "/docs",
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerSpec, { explorer: true }),
-);
+// Root endpoint
+app.get("/", (req, res) => res.json({ message: "Muhasebe API - Admin Panel MVP" }));
 
 // Routes
 app.use("/customers", customersRouter);

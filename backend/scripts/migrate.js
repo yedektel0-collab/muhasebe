@@ -1,6 +1,10 @@
 ﻿import fs from "fs";
 import path from "path";
 import pkg from "pg";
+import dotenv from "dotenv";
+
+// Load environment variables
+dotenv.config();
 
 const { Client } = pkg;
 
