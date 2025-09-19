@@ -1,37 +1,22 @@
-﻿version: "3.9"
+version: '3.8'
 services:
-  db:
-    image: postgres:15
-    container_name: muhasebe-db
-    restart: unless-stopped
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: muhasebe
-    ports:
-      - "5432:5432"
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d muhasebe"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
   backend:
-    build:
-      context: ./backend
-    container_name: muhasebe-backend
-    env_file:
-      - ./backend/.env
-    depends_on:
-      db:
-        condition: service_healthy
+    build: ./backend
     ports:
-      - "3000:3000"
-    # Geliştirme modunda canlı kod için (isteğe bağlı):
-    # volumes:
-    #   - ./backend/src:/app/src
+      - "4000:4000"
+    environment:
+      - NODE_ENV=development
+      - PORT=4000
+      - JWT_SECRET=${JWT_SECRET}
+    volumes:
+      - ./backend:/app
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:4000
+    volumes:
+      - ./frontend:/app
 
-volumes:
-  db_data:
+---
