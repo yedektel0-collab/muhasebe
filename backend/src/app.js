@@ -1,5 +1,9 @@
 import express from "express";
+import cors from "cors";
 import customersRouter from "./routes/customers.js";
+import authRouter from "./routes/auth.js";
+import adminRouter from "./routes/admin.js";
+import plansRouter from "./routes/plans.js";
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./docs/swagger.js";
@@ -9,6 +13,13 @@ import crypto from "node:crypto";
 import logger from "./lib/logger.js";
 
 const app = express();
+
+// CORS for frontend
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3001',
+  credentials: true
+}));
+
 app.use(express.json());
 
 // Request logging + request-id
@@ -37,6 +48,9 @@ app.use(
 
 // Routes
 app.use("/customers", customersRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/admin", adminRouter);
+app.use("/api/plans", plansRouter);
 
 // Health
 app.get("/db-check", (req, res) => {
